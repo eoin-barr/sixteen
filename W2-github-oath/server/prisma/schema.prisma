@@ -10,6 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model UserToken {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hash        String   @unique
+  userID      BigInt   @map("user_id")
+  displayName String   @map("display_name")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  expiresAt   DateTime @default(dbgenerated("(now() + '10 years'::interval")) @map("expires_at") @db.Timestamp(6)
+  users       User     @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id                 BigInt      @id @default(autoincrement())
+  email              String      @unique
+  githubID           BigInt      @map("github_id")
+  githubUsername     String      @map("github_username")
+  githubAvatarUrl    String      @map("github_avatar_url")
+  dateJoined         DateTime    @default(now()) @map("date_joined") @db.Timestamp(6)
+  githubAppInstalled Boolean     @default(false) @map("github_app_installed")
+  githubOauthToken   String?     @map("github_oauth_token")
+  userTokens         UserToken[]
+}
+
 model Post {
   id        Int     @id @default(autoincrement())
   tite      String

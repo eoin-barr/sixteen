@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./context"
 
 
 
@@ -34,6 +34,13 @@ export interface NexusGenObjects {
     title?: string | null; // String
   }
   Query: {};
+  User: { // root type
+    email: string; // String!
+    githubAppAuthorized: string; // String!
+    githubID: number; // Int!
+    githubUsername: string; // String!
+    id: number; // Int!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -55,6 +62,13 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     ok: boolean; // Boolean!
   }
+  User: { // field return type
+    email: string; // String!
+    githubAppAuthorized: string; // String!
+    githubID: number; // Int!
+    githubUsername: string; // String!
+    id: number; // Int!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
@@ -65,6 +79,13 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     ok: 'Boolean'
+  }
+  User: { // field return type name
+    email: 'String'
+    githubAppAuthorized: 'String'
+    githubID: 'Int'
+    githubUsername: 'String'
+    id: 'Int'
   }
 }
 
@@ -95,14 +116,14 @@ export type NexusGenAbstractsUsingStrategyResolveType = never;
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {
-    isTypeOf: false
-    resolveType: true
+    resolveType: false
     __typename: false
+    isTypeOf: false
   }
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

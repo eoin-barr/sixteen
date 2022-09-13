@@ -11,3 +11,11 @@ type Post {
 type Query {
   ok: Boolean!
 }
+
+type User {
+  email: String!
+  githubAppAuthorized: String!
+  githubID: Int!
+  githubUsername: String!
+  id: Int!
+}
