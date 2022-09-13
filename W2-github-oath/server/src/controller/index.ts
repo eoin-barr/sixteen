@@ -47,6 +47,7 @@ export const login: RequestHandler = async (req, res) => {
     try {
       user = await upsertUser(data);
     } catch (e) {
+      console.log(e);
       return res.status(500).send({ error: "Failed to create user" });
     }
 
@@ -73,7 +74,7 @@ export const login: RequestHandler = async (req, res) => {
     const cookie = await createSessionCookie(res, session);
 
     res.append("Set-Cookie", cookie);
-    res.status(200).end();
+    return res.status(200).end();
   } catch (error: any) {
     console.log(error);
     return res.status(error.status || 500).end(error.message);

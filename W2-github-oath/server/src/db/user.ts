@@ -2,14 +2,14 @@ import { User } from "@prisma/client";
 
 import { db } from "./index";
 
-export const getUser = async (id: number): Promise<User | null> =>
+export const getUser = async (id: bigint): Promise<User | null> =>
   db.user.findUnique({
     where: {
       id,
     },
   });
 
-export const updateUser = async (id: number, data: Partial<User>) =>
+export const updateUser = async (id: bigint, data: Partial<User>) =>
   db.user.update({
     where: { id },
     data,
@@ -17,7 +17,7 @@ export const updateUser = async (id: number, data: Partial<User>) =>
 
 export interface UpsertUserInput {
   email: string;
-  githubID: number;
+  githubID: bigint;
   githubUsername: string;
   githubAvatarUrl: string;
   githubAppInstalled?: boolean;
