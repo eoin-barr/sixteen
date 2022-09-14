@@ -93,7 +93,7 @@ export const logout: RequestHandler = async (req, res) => {
 };
 
 export const githubOAuth: RequestHandler = async (req, res) => {
-  const { state, code, redirectUri } = req.query;
+  const { state, code, redirectURI } = req.query;
 
   const cookie = getCookieFromRequest(req.headers);
   const session = await getSessionFromCookie(cookie);
@@ -107,7 +107,7 @@ export const githubOAuth: RequestHandler = async (req, res) => {
     oauthToken = await githubExchangeCodeForAccessToken(
       code as string,
       state as string,
-      redirectUri as string
+      redirectURI as string
     );
   } catch (e) {
     console.error(`Failed to exchange code for access token ${e}`);
