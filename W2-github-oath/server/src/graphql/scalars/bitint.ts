@@ -33,7 +33,8 @@ export const GqlBigInt = scalarType({
   name: "BigInt",
   description:
     "The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.",
-  serialize: (value) => BigInt(coerceBigInt(value)),
+  serialize: coerceBigInt,
+  parseValue: (value) => BigInt(coerceBigInt(value)),
   parseLiteral(ast) {
     if (ast.kind === "IntValue") {
       const num = parseInt(ast.value, 10);
@@ -43,7 +44,7 @@ export const GqlBigInt = scalarType({
     }
     return null;
   },
-  asNexusMethod: "bigint",
+  asNexusMethod: "bigInt",
 });
 
 export const bigIntArg = (opts?: core.NexusArgConfig<"BigInt">) =>
