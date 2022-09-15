@@ -8,8 +8,8 @@ export const User = objectType({
     t.nonNull.bigInt("id");
     t.nonNull.string("email");
     t.nonNull.int("githubID");
-    t.nonNull.string("githubUsername");
-    t.nonNull.string("githubAppAuthorized", {
+    t.nonNull.boolean("githubUsername");
+    t.nonNull.boolean("githubAppAuthorized", {
       resolve: resolveGithubAppAuthorized,
     });
     t.nonNull.dateTime("dateJoined");

@@ -5,8 +5,27 @@
 
 
 import type { Context } from "./context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    uuid<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "UUID";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "BigInt";
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    uuid<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "UUID";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "BigInt";
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -25,9 +44,19 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  BigInt: any
+  DateTime: Date
+  UUID: string
 }
 
 export interface NexusGenObjects {
+  AuthCode: { // root type
+    code: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['UUID']; // UUID!
+  }
+  Mutation: {};
   Post: { // root type
     id?: number | null; // Int
     published?: boolean | null; // Boolean
@@ -35,11 +64,19 @@ export interface NexusGenObjects {
   }
   Query: {};
   User: { // root type
+    dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    githubAppAuthorized: string; // String!
     githubID: number; // Int!
-    githubUsername: string; // String!
-    id: number; // Int!
+    githubUsername: boolean; // Boolean!
+    id: NexusGenScalars['BigInt']; // BigInt!
+  }
+  UserToken: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    displayName: string; // String!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    hash?: string | null; // String
+    id: NexusGenScalars['UUID']; // UUID!
+    token?: string | null; // String
   }
 }
 
@@ -54,42 +91,98 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthCode: { // field return type
+    code: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['UUID']; // UUID!
+  }
+  Mutation: { // field return type
+    createUserToken: NexusGenRootTypes['UserToken'] | null; // UserToken
+    deleteUserToken: NexusGenRootTypes['UserToken'] | null; // UserToken
+    upsertMe: NexusGenRootTypes['User']; // User!
+  }
   Post: { // field return type
     id: number | null; // Int
     published: boolean | null; // Boolean
     title: string | null; // String
   }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    UserTokens: Array<NexusGenRootTypes['UserToken'] | null> | null; // [UserToken]
+    me: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
+    dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    githubAppAuthorized: string; // String!
+    githubAppAuthorized: boolean; // Boolean!
     githubID: number; // Int!
-    githubUsername: string; // String!
-    id: number; // Int!
+    githubUsername: boolean; // Boolean!
+    id: NexusGenScalars['BigInt']; // BigInt!
+  }
+  UserToken: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    displayName: string; // String!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    hash: string | null; // String
+    id: NexusGenScalars['UUID']; // UUID!
+    token: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthCode: { // field return type name
+    code: 'String'
+    createdAt: 'DateTime'
+    expiresAt: 'DateTime'
+    id: 'UUID'
+  }
+  Mutation: { // field return type name
+    createUserToken: 'UserToken'
+    deleteUserToken: 'UserToken'
+    upsertMe: 'User'
+  }
   Post: { // field return type name
     id: 'Int'
     published: 'Boolean'
     title: 'String'
   }
   Query: { // field return type name
-    ok: 'Boolean'
+    UserTokens: 'UserToken'
+    me: 'User'
   }
   User: { // field return type name
+    dateJoined: 'DateTime'
     email: 'String'
-    githubAppAuthorized: 'String'
+    githubAppAuthorized: 'Boolean'
     githubID: 'Int'
-    githubUsername: 'String'
-    id: 'Int'
+    githubUsername: 'Boolean'
+    id: 'BigInt'
+  }
+  UserToken: { // field return type name
+    createdAt: 'DateTime'
+    displayName: 'String'
+    expiresAt: 'DateTime'
+    hash: 'String'
+    id: 'UUID'
+    token: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createUserToken: { // args
+      expiresAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    }
+    deleteUserToken: { // args
+      id: NexusGenScalars['UUID']; // UUID!
+    }
+    upsertMe: { // args
+      email: string; // String!
+      githubAvatarUrl: string; // String!
+      githubID: NexusGenScalars['BigInt']; // BigInt!
+      githubUsername: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

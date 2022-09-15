@@ -16,8 +16,10 @@ model UserToken {
   userID      BigInt   @map("user_id")
   displayName String   @map("display_name")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
-  expiresAt   DateTime @default(dbgenerated("(now() + '10 years'::interval")) @map("expires_at") @db.Timestamp(6)
+  expiresAt   DateTime @default(dbgenerated("(now() + '10 years'::interval)")) @map("expires_at") @db.Timestamp(6)
   users       User     @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user_token")
 }
 
 model User {
