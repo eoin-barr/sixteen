@@ -4,12 +4,13 @@ import { Octokit } from "octokit";
 import { sign as signJWT } from "jsonwebtoken";
 import { gql, GraphQLClient } from "graphql-request";
 import { db } from "../../db";
+import { GqlUnauthorizedError } from "../errors/gql";
 
 export interface GithubUserInfo {
   login: string;
   email: string;
   avatarUrl: string;
-  databaseId: number;
+  databaseId: bigint;
 }
 
 export function encryptGithubToken(token: string) {
@@ -23,10 +24,10 @@ export function decryptGithubToken(token: string) {
 export async function githubExchangeCodeForAccessToken(
   code: string,
   state: string,
-  redirectUri: string
+  redirectURI: string
 ): Promise<string | never> {
   const base = `https://github.com/login/oauth/access_token`;
-  const params = `?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}&state=${state}&redirect_uri=${redirectUri}`;
+  const params = `?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}&state=${state}&redirect_uri=${redirectURI}`;
   const url = base + params;
 
   return fetch(url, {
@@ -54,7 +55,7 @@ export async function getGithubUserInfo(token: string) {
   const email = data.find((e: any) => e.primary)?.email;
 
   if (!email) {
-    return Promise.reject("No user email found");
+    return Promise.reject(new GqlUnauthorizedError("No user email found"));
   }
 
   const client = new GraphQLClient("https://api.github.com/graphql", {

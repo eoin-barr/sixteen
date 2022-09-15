@@ -9,7 +9,7 @@ export enum UserType {
 }
 
 export interface UserContext {
-  uid: number | null;
+  uid: bigint | null;
   token: string | null;
   roles: UserRoles[] | null;
   type: UserType | null;

@@ -47,7 +47,7 @@ async function createServer() {
         }
 
         if (!ctx.connectionParams) {
-          throw new Error("No authorization header found");
+          throw new GqlUnauthorizedError("No authorization header found");
         }
 
         const connParams = Object.fromEntries(
@@ -58,12 +58,12 @@ async function createServer() {
         );
 
         if (!connParams.authorization) {
-          throw new Error("No authorization header found");
+          throw new GqlUnauthorizedError("No authorization header found");
         }
 
         const authHeader = connParams.authorization as string;
         if (!BEARER_CREDENTIALS_REGEXP.exec(authHeader)) {
-          throw new Error("Bearer token missing");
+          throw new GqlUnauthorizedError("Bearer token missing");
         }
 
         token = authHeader.split(" ")[1];

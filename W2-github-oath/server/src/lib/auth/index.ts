@@ -1,4 +1,5 @@
 import { IncomingHttpHeaders } from "http";
+import { GqlUnauthorizedError } from "../errors/gql";
 import { authenticateBearerToken } from "./bearer";
 import { authenticateCookie, getCookieFromRequest } from "./cookie";
 
@@ -13,11 +14,11 @@ function getAuthFunction(headers: IncomingHttpHeaders) {
   }
 
   if (!headers.authorization) {
-    throw new Error("No authorization header");
+    throw new GqlUnauthorizedError("No authorization header");
   }
 
   if (!BEARER_CREDENTIALS_REGEXP.exec(headers.authorization)) {
-    throw new Error("Invalid authorization header");
+    throw new GqlUnauthorizedError("Invalid authorization header");
   }
 
   token = headers.authorization.split(" ")[1];

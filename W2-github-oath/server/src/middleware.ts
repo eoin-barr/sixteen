@@ -29,7 +29,7 @@ export const request = async (
 };
 
 export const authWrapper =
-  (handler: RequestHandler) =>
+  (handler: RequestHandler): RequestHandler =>
   async (req: Request, res: Response, next: NextFunction) => {
     let context;
     try {
