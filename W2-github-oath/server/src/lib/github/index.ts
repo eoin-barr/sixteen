@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import { Octokit } from "octokit";
 import { sign as signJWT } from "jsonwebtoken";
 import { gql, GraphQLClient } from "graphql-request";
+import { db } from "../../db";
 
 export interface GithubUserInfo {
   login: string;
@@ -80,5 +81,41 @@ export async function getGithubUserInfo(token: string) {
     .catch((e) => {
       console.error("Failed to get Github user info");
       return Promise.reject(e);
+    });
+}
+
+export async function githubOauthTokenIsValid(
+  userID: bigint
+): Promise<boolean> {
+  return db.user
+    .findUnique({
+      where: {
+        id: userID,
+      },
+    })
+    .then(async (user) => {
+      if (!user) {
+        return false;
+      }
+
+      if (!user.githubOauthToken) {
+        return false;
+      }
+
+      const token = await decryptGithubToken(user.githubOauthToken).catch(
+        (e) => {
+          console.error("Couldn't decrypt github access token", e);
+          return null;
+        }
+      );
+
+      const octokit = new Octokit({
+        auth: token,
+      });
+
+      return octokit.rest.users
+        .getAuthenticated()
+        .then(() => true)
+        .catch(() => false);
     });
 }
