@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import React, { useState } from 'react';
-import { FiGithub } from 'react-icons/fi';
+import { AiFillGithub } from 'react-icons/ai';
 import Loading from '../../components/loading';
 
 const Login: NextPage = () => {
@@ -20,14 +20,14 @@ const Login: NextPage = () => {
     <div className="h-screen w-screen flex items-center justify-center bg-purple1">
       <button
         onClick={handleSubmit}
-        className="flex items-center justify-center rounded-lg bg-purple2 p-4 hover:bg-purple3 w-[183px]"
+        className="flex items-center justify-center rounded-lg bg-purple2 p-4 hover:bg-purple3 w-[200px]"
       >
         {loading ? (
           <Loading />
         ) : (
-          <div className="flex">
-            <span>Login with Github</span>
-            <FiGithub className="w-6 h-6 pl-2" />
+          <div className="flex items-center">
+            <span className="mr-2">Login with Github</span>
+            <AiFillGithub className="w-6 h-6" />
           </div>
         )}
       </button>

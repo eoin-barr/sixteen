@@ -37,7 +37,7 @@ const GithubOauthCallback: NextPage = () => {
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-purple1">
       {loading ? (
-        <div className="flex items-center justify-center bg-purple2 hover:bg-purple3 w-[183px] rounded-lg p-4">
+        <div className="flex items-center justify-center bg-purple2 hover:bg-purple3 w-[200px] rounded-lg p-4">
           <Loading />
         </div>
       ) : (
