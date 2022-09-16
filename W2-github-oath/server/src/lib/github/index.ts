@@ -40,16 +40,19 @@ export async function githubExchangeCodeForAccessToken(
       if (res.status !== 200) {
         throw new Error("Failed to exhange OAuth code for access token");
       }
+      console.log("res", res);
       return res.json();
     })
     .then((data: any) => data.access_token)
     .catch((error) => {
+      console.log("Failing inside githubExchangeCodeForAccessToken");
       console.log(error);
       return Promise.reject(error);
     });
 }
 
 export async function getGithubUserInfo(token: string) {
+  console.log("TOKEN", token);
   const octokit = new Octokit({ auth: token });
   const { data } = await octokit.request("GET /user/emails");
   const email = data.find((e: any) => e.primary)?.email;
@@ -75,9 +78,9 @@ export async function getGithubUserInfo(token: string) {
   `;
   return client
     .request(query, {})
-    .then((data: any) => ({
+    .then((d: any) => ({
       email: email,
-      ...data.viewer,
+      ...d.viewer,
     }))
     .catch((e) => {
       console.error("Failed to get Github user info");

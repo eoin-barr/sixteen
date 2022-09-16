@@ -18,6 +18,7 @@ const GithubOauthCallback: NextPage = () => {
       loginWithGithub(router.query.code as string, router.query.state as string)
         .then((status) => {
           if (status !== 200) {
+            console.log('status', status);
             setLoading(false);
             setError('Failed to complete oauth flow');
             return;

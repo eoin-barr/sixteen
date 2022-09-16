@@ -29,11 +29,16 @@ export const login: RequestHandler = async (req, res) => {
       code as string,
       state as string,
       ""
-    ).then((token) => getGithubUserInfo(token));
-  } catch (e) {
+    ).then((token) => {
+      console.log("TOKEN", token);
+
+      return getGithubUserInfo(token);
+    });
+  } catch (e: any) {
+    console.log(e.message);
     return res
       .status(500)
-      .send({ error: "Failed to authenticate with Github" });
+      .send({ error: `Failed to authenticate with Github1:` });
   }
 
   try {
