@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import Loading from '../../components/loading';
 import { loginWithGithub } from '../../lib/auth/login';
 
 const GithubOauthCallback: NextPage = () => {
@@ -34,8 +35,14 @@ const GithubOauthCallback: NextPage = () => {
   }, [router.query]);
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-black">
-      {loading ? <div>Loading</div> : <div>{error}</div>}
+    <div className="h-screen w-screen flex items-center justify-center bg-purple1">
+      {loading ? (
+        <div className="flex items-center justify-center bg-purple2 hover:bg-purple3 w-[183px] rounded-lg p-4">
+          <Loading />
+        </div>
+      ) : (
+        <div>{error}</div>
+      )}
     </div>
   );
 };
