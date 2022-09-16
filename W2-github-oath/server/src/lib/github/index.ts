@@ -1,10 +1,10 @@
-import Iron from "@hapi/iron";
-import fetch from "node-fetch";
-import { Octokit } from "octokit";
-import { sign as signJWT } from "jsonwebtoken";
-import { gql, GraphQLClient } from "graphql-request";
-import { db } from "../../db";
-import { GqlUnauthorizedError } from "../errors/gql";
+import Iron from '@hapi/iron';
+import fetch from 'node-fetch';
+import { Octokit } from 'octokit';
+import { sign as signJWT } from 'jsonwebtoken';
+import { gql, GraphQLClient } from 'graphql-request';
+import { db } from '../../db';
+import { GqlUnauthorizedError } from '../errors/gql';
 
 export interface GithubUserInfo {
   login: string;
@@ -31,37 +31,38 @@ export async function githubExchangeCodeForAccessToken(
   const url = base + params;
 
   return fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
     },
   })
     .then((res) => {
       if (res.status !== 200) {
-        throw new Error("Failed to exhange OAuth code for access token");
+        throw new Error('Failed to exhange OAuth code for access token');
       }
-      console.log("res", res);
+      console.log('res', res);
       return res.json();
     })
     .then((data: any) => data.access_token)
     .catch((error) => {
-      console.log("Failing inside githubExchangeCodeForAccessToken");
+      console.log('Failing inside githubExchangeCodeForAccessToken');
       console.log(error);
       return Promise.reject(error);
     });
 }
 
 export async function getGithubUserInfo(token: string) {
-  console.log("TOKEN", token);
+  console.log('TOKEN', token);
   const octokit = new Octokit({ auth: token });
-  const { data } = await octokit.request("GET /user/emails");
+  const { data } = await octokit.request('GET /user/emails');
+  console.log('data', data);
   const email = data.find((e: any) => e.primary)?.email;
 
   if (!email) {
-    return Promise.reject(new GqlUnauthorizedError("No user email found"));
+    console.log('NO EMAIL');
+    return Promise.reject(new GqlUnauthorizedError('No user email found'));
   }
-
-  const client = new GraphQLClient("https://api.github.com/graphql", {
+  const client = new GraphQLClient('https://api.github.com/graphql', {
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -83,14 +84,12 @@ export async function getGithubUserInfo(token: string) {
       ...d.viewer,
     }))
     .catch((e) => {
-      console.error("Failed to get Github user info");
+      console.error("Failed to get Github user's info");
       return Promise.reject(e);
     });
 }
 
-export async function githubOauthTokenIsValid(
-  userID: bigint
-): Promise<boolean> {
+export async function githubOauthTokenIsValid(userID: bigint): Promise<boolean> {
   return db.user
     .findUnique({
       where: {
@@ -106,12 +105,10 @@ export async function githubOauthTokenIsValid(
         return false;
       }
 
-      const token = await decryptGithubToken(user.githubOauthToken).catch(
-        (e) => {
-          console.error("Couldn't decrypt github access token", e);
-          return null;
-        }
-      );
+      const token = await decryptGithubToken(user.githubOauthToken).catch((e) => {
+        console.error("Couldn't decrypt github access token", e);
+        return null;
+      });
 
       const octokit = new Octokit({
         auth: token,

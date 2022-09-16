@@ -1,6 +1,6 @@
-import { User } from "@prisma/client";
+import { User } from '@prisma/client';
 
-import { db } from "./index";
+import { db } from './index';
 
 export const getUser = async (id: bigint): Promise<User | null> =>
   db.user.findUnique({
@@ -38,7 +38,7 @@ export const upsertUser = async (data: UpsertUserInput): Promise<User> => {
         },
       })
       .then((u: any) => {
-        console.log("created user with id", u.id);
+        console.log('created user with id', u.id);
         return u;
       });
   }
@@ -53,7 +53,7 @@ export const upsertUser = async (data: UpsertUserInput): Promise<User> => {
       },
     })
     .then((u: any) => {
-      console.log("updated user with id", u.id);
+      console.log('updated user with id', u.id);
       return u;
     });
 };

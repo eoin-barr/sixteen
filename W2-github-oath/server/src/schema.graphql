@@ -39,8 +39,8 @@ type User {
   dateJoined: DateTime!
   email: String!
   githubAppAuthorized: Boolean!
-  githubID: Int!
-  githubUsername: Boolean!
+  githubID: BigInt!
+  githubUsername: String!
   id: BigInt!
 }
 

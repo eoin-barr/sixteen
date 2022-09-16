@@ -66,8 +66,8 @@ export interface NexusGenObjects {
   User: { // root type
     dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    githubID: number; // Int!
-    githubUsername: boolean; // Boolean!
+    githubID: NexusGenScalars['BigInt']; // BigInt!
+    githubUsername: string; // String!
     id: NexusGenScalars['BigInt']; // BigInt!
   }
   UserToken: { // root type
@@ -115,8 +115,8 @@ export interface NexusGenFieldTypes {
     dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     githubAppAuthorized: boolean; // Boolean!
-    githubID: number; // Int!
-    githubUsername: boolean; // Boolean!
+    githubID: NexusGenScalars['BigInt']; // BigInt!
+    githubUsername: string; // String!
     id: NexusGenScalars['BigInt']; // BigInt!
   }
   UserToken: { // field return type
@@ -154,8 +154,8 @@ export interface NexusGenFieldTypeNames {
     dateJoined: 'DateTime'
     email: 'String'
     githubAppAuthorized: 'Boolean'
-    githubID: 'Int'
-    githubUsername: 'Boolean'
+    githubID: 'BigInt'
+    githubUsername: 'String'
     id: 'BigInt'
   }
   UserToken: { // field return type name

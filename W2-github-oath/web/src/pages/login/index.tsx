@@ -7,7 +7,7 @@ const Login: NextPage = () => {
   const state = '/';
   const base = `https://github.com/login/oauth/authorize`;
   // redirect to login callback
-  const params = `?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URI}&state=${state}`;
+  const params = `?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user&redirect_uri=${process.env.NEXT_PUBLIC_LOGIN_REDIRECT_URI}&state=${state}`;
   const url = base + params;
 
   function handleSubmit() {

@@ -1,26 +1,30 @@
-import { User } from "@prisma/client";
-import { RequestHandler } from "express";
-import { db, upsertUser, updateUser } from "../db";
+import { User } from '@prisma/client';
+import { RequestHandler } from 'express';
+import { db, upsertUser, updateUser } from '../db';
 import {
   COOKIE_NAME,
   createSessionCookie,
   getCookieFromRequest,
   getSessionFromCookie,
   MAX_AGE,
-} from "../lib/auth/cookie";
-import { createSecureToken } from "../lib/auth/token";
+} from '../lib/auth/cookie';
+import { createSecureToken } from '../lib/auth/token';
 import {
   encryptGithubToken,
   getGithubUserInfo,
   githubExchangeCodeForAccessToken,
   GithubUserInfo,
-} from "../lib/github";
+} from '../lib/github';
+
+export const test: RequestHandler = async (req, res) => {
+  return res.send('Hello World');
+};
 
 export const login: RequestHandler = async (req, res) => {
   const { state, code } = req.query;
 
   if (!state || !code) {
-    return res.status(400).send({ error: "Missing state or code" });
+    return res.status(400).send({ error: 'Missing state or code' });
   }
 
   let githubInfo: GithubUserInfo;
@@ -28,17 +32,11 @@ export const login: RequestHandler = async (req, res) => {
     githubInfo = await githubExchangeCodeForAccessToken(
       code as string,
       state as string,
-      ""
-    ).then((token) => {
-      console.log("TOKEN", token);
-
-      return getGithubUserInfo(token);
-    });
+      ''
+    ).then((token) => getGithubUserInfo(token));
   } catch (e: any) {
-    console.log(e.message);
-    return res
-      .status(500)
-      .send({ error: `Failed to authenticate with Github1:` });
+    console.log('HERE', e);
+    return res.status(500).send({ error: `Failed to authenticate with Github1:` });
   }
 
   try {
@@ -53,7 +51,7 @@ export const login: RequestHandler = async (req, res) => {
       user = await upsertUser(data);
     } catch (e) {
       console.log(e);
-      return res.status(500).send({ error: "Failed to create user" });
+      return res.status(500).send({ error: 'Failed to create user' });
     }
 
     const expiresAt = new Date(Date.now() + MAX_AGE * 1000);
@@ -70,18 +68,18 @@ export const login: RequestHandler = async (req, res) => {
       })
       .catch((e: any) => {
         console.log(e);
-        return res
-          .status(500)
-          .send({ message: "Failed to generate auth credentials" });
+        return res.status(500).send({ message: 'Failed to generate auth credentials' });
       });
 
+    console.log('ABOVE', user.id);
     const session = { uid: Number(user.id), token: st.token };
     const cookie = await createSessionCookie(res, session);
+    console.log('BELOW');
 
-    res.append("Set-Cookie", cookie);
+    res.append('Set-Cookie', cookie);
     return res.status(200).end();
   } catch (error: any) {
-    console.log(error);
+    console.log('HELLO THERE', error);
     return res.status(error.status || 500).end(error.message);
   }
 };
@@ -89,9 +87,9 @@ export const login: RequestHandler = async (req, res) => {
 export const logout: RequestHandler = async (req, res) => {
   res.clearCookie(COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
-    path: "/",
-    sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
+    secure: process.env.NODE_ENV !== 'development',
+    path: '/',
+    sameSite: process.env.NODE_ENV !== 'development' ? 'none' : 'lax',
   });
 
   return res.status(200).end();
@@ -104,7 +102,7 @@ export const githubOAuth: RequestHandler = async (req, res) => {
   const session = await getSessionFromCookie(cookie);
 
   if (!state || !code) {
-    return res.status(400).send({ error: "missing state or code" });
+    return res.status(400).send({ error: 'missing state or code' });
   }
 
   let oauthToken;
@@ -116,9 +114,7 @@ export const githubOAuth: RequestHandler = async (req, res) => {
     );
   } catch (e) {
     console.error(`Failed to exchange code for access token ${e}`);
-    return res
-      .status(500)
-      .send({ error: "Failed to authenticate with Github" });
+    return res.status(500).send({ error: 'Failed to authenticate with Github' });
   }
 
   let token;
@@ -126,18 +122,14 @@ export const githubOAuth: RequestHandler = async (req, res) => {
     token = await encryptGithubToken(oauthToken);
   } catch (e) {
     console.error(`Failed to encrypt token ${e}`);
-    return res
-      .status(500)
-      .send({ error: "Failed to authenticate with Github" });
+    return res.status(500).send({ error: 'Failed to authenticate with Github' });
   }
 
   //@ts-ignore
   return updateUser(BigInt(session.uid), { githubOauthToken: token })
     .catch((e) => {
       console.error(`Couldn't update user wth Github access token: ${e}`);
-      return res
-        .status(500)
-        .send({ error: "Failed to authenticate with Github" });
+      return res.status(500).send({ error: 'Failed to authenticate with Github' });
     })
-    .then(() => res.status(200).send({ message: "success" }));
+    .then(() => res.status(200).send({ message: 'success' }));
 };
