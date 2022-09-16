@@ -9,7 +9,6 @@ export const GET_USER_DETAILS = gql`
       githubID
       githubAvatarUrl
       githubUsername
-      githubAppInstalled
     }
   }
 `;

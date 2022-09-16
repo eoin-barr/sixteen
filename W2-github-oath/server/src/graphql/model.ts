@@ -8,6 +8,7 @@ export const User = objectType({
     t.nonNull.bigInt('id');
     t.nonNull.string('email');
     t.nonNull.bigInt('githubID');
+    t.nonNull.string('githubAvatarUrl');
     t.nonNull.string('githubUsername');
     t.nonNull.boolean('githubAppAuthorized', {
       resolve: resolveGithubAppAuthorized,

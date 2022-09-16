@@ -66,6 +66,7 @@ export interface NexusGenObjects {
   User: { // root type
     dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
+    githubAvatarUrl: string; // String!
     githubID: NexusGenScalars['BigInt']; // BigInt!
     githubUsername: string; // String!
     id: NexusGenScalars['BigInt']; // BigInt!
@@ -115,6 +116,7 @@ export interface NexusGenFieldTypes {
     dateJoined: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
     githubAppAuthorized: boolean; // Boolean!
+    githubAvatarUrl: string; // String!
     githubID: NexusGenScalars['BigInt']; // BigInt!
     githubUsername: string; // String!
     id: NexusGenScalars['BigInt']; // BigInt!
@@ -154,6 +156,7 @@ export interface NexusGenFieldTypeNames {
     dateJoined: 'DateTime'
     email: 'String'
     githubAppAuthorized: 'Boolean'
+    githubAvatarUrl: 'String'
     githubID: 'BigInt'
     githubUsername: 'String'
     id: 'BigInt'

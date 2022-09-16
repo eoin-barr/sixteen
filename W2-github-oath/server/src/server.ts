@@ -1,23 +1,23 @@
-import http from "http";
-import cors from "cors";
-import express from "express";
-import { WebSocketServer } from "ws";
-import bodyParser from "body-parser";
-import { useServer } from "graphql-ws/lib/use/ws";
-import { ApolloServer } from "apollo-server-express";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import http from 'http';
+import cors from 'cors';
+import express from 'express';
+import { WebSocketServer } from 'ws';
+import bodyParser from 'body-parser';
+import { useServer } from 'graphql-ws/lib/use/ws';
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 
-import { UserContext } from "./lib/types";
-import { authenticateBearerToken } from "./lib/auth/bearer";
-import { authenticateCookie, getCookieFromRequest } from "./lib/auth/cookie";
+import { UserContext } from './lib/types';
+import { authenticateBearerToken } from './lib/auth/bearer';
+import { authenticateCookie, getCookieFromRequest } from './lib/auth/cookie';
 
-import router from "./routes";
-import { schema } from "./schema";
-import { request as requestMiddleware } from "./middleware";
-import { auth, BEARER_CREDENTIALS_REGEXP } from "./lib/auth";
-import { context } from "./context";
-import { CheckDbConnectionPlugin } from "./db";
-import { GqlUnauthorizedError } from "./lib/errors/gql";
+import router from './routes';
+import { schema } from './schema';
+import { request as requestMiddleware } from './middleware';
+import { auth, BEARER_CREDENTIALS_REGEXP } from './lib/auth';
+import { context } from './context';
+import { CheckDbConnectionPlugin } from './db';
+import { GqlUnauthorizedError } from './lib/errors/gql';
 
 async function createServer() {
   const app = express();
@@ -47,7 +47,7 @@ async function createServer() {
         }
 
         if (!ctx.connectionParams) {
-          throw new GqlUnauthorizedError("No authorization header found");
+          throw new GqlUnauthorizedError('No authorization header found');
         }
 
         const connParams = Object.fromEntries(
@@ -58,15 +58,15 @@ async function createServer() {
         );
 
         if (!connParams.authorization) {
-          throw new GqlUnauthorizedError("No authorization header found");
+          throw new GqlUnauthorizedError('No authorization header found');
         }
 
         const authHeader = connParams.authorization as string;
         if (!BEARER_CREDENTIALS_REGEXP.exec(authHeader)) {
-          throw new GqlUnauthorizedError("Bearer token missing");
+          throw new GqlUnauthorizedError('Bearer token missing');
         }
 
-        token = authHeader.split(" ")[1];
+        token = authHeader.split(' ')[1];
         return authenticateBearerToken(token).then((user) => ({
           ...context,
           user: user,
@@ -97,9 +97,9 @@ async function createServer() {
   const corsOptions = {
     origin: [
       /^http:\/\/localhost(:[0-9]+)/,
-      "http://127.0.0.1:3000",
+      'http://127.0.0.1:3000',
       /\.vercel\.app$/,
-      "https://studio.apollographql.com",
+      'https://studio.apollographql.com',
     ],
     credentials: true,
     cors: false,
@@ -113,7 +113,7 @@ async function createServer() {
     .start()
     .then(() => {
       app.use(requestMiddleware);
-      server.applyMiddleware({ app, path: "graphql", cors: corsOptions });
+      server.applyMiddleware({ app, path: '/graphql', cors: corsOptions });
     })
     .catch((e) => {
       console.log(e);
