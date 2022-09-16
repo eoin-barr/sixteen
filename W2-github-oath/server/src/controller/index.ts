@@ -35,8 +35,7 @@ export const login: RequestHandler = async (req, res) => {
       ''
     ).then((token) => getGithubUserInfo(token));
   } catch (e: any) {
-    console.log('HERE', e);
-    return res.status(500).send({ error: `Failed to authenticate with Github1:` });
+    return res.status(500).send({ error: `Failed to authenticate with Github` });
   }
 
   try {
@@ -50,7 +49,6 @@ export const login: RequestHandler = async (req, res) => {
     try {
       user = await upsertUser(data);
     } catch (e) {
-      console.log(e);
       return res.status(500).send({ error: 'Failed to create user' });
     }
 
@@ -67,14 +65,11 @@ export const login: RequestHandler = async (req, res) => {
         },
       })
       .catch((e: any) => {
-        console.log(e);
         return res.status(500).send({ message: 'Failed to generate auth credentials' });
       });
 
-    console.log('ABOVE', user.id);
     const session = { uid: Number(user.id), token: st.token };
     const cookie = await createSessionCookie(res, session);
-    console.log('BELOW');
 
     res.append('Set-Cookie', cookie);
     return res.status(200).end();

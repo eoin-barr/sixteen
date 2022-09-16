@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
-import { AiFillGithub, AiOutlineMinus } from 'react-icons/ai';
+import { AiFillGithub } from 'react-icons/ai';
 import { useUserSession } from '../lib/hooks';
+import { logout } from '../lib/auth';
 
 const Home: NextPage = () => {
   const { user, ...userStatus } = useUserSession();
@@ -12,7 +13,7 @@ const Home: NextPage = () => {
       ) : user ? (
         <div className="flex flex-col items-center justify-center">
           <div>
-            <p className="text-2xl pb-4">OAuth Login Successful</p>
+            <p className="text-2xl pb-8">OAuth Login Successful</p>
           </div>
           <div className="flex flex-col items-center justify-center border border-gray-500 rounded-lg py-8 sm:px-12 px-8">
             <div className="flex items-center justify-center">
@@ -39,8 +40,10 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="py-8">
-            <button className="bg-gray-700 p-2 rounded-lg">Logout</button>
+          <div className="py-10">
+            <button onClick={logout} className="bg-gray-700 p-2 rounded-lg">
+              Logout
+            </button>
           </div>
         </div>
       ) : (
