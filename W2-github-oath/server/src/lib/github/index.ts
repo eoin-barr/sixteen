@@ -40,26 +40,20 @@ export async function githubExchangeCodeForAccessToken(
       if (res.status !== 200) {
         throw new Error('Failed to exhange OAuth code for access token');
       }
-      console.log('res', res);
       return res.json();
     })
     .then((data: any) => data.access_token)
     .catch((error) => {
-      console.log('Failing inside githubExchangeCodeForAccessToken');
-      console.log(error);
       return Promise.reject(error);
     });
 }
 
 export async function getGithubUserInfo(token: string) {
-  console.log('TOKEN', token);
   const octokit = new Octokit({ auth: token });
   const { data } = await octokit.request('GET /user/emails');
-  console.log('data', data);
   const email = data.find((e: any) => e.primary)?.email;
 
   if (!email) {
-    console.log('NO EMAIL');
     return Promise.reject(new GqlUnauthorizedError('No user email found'));
   }
   const client = new GraphQLClient('https://api.github.com/graphql', {

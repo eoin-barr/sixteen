@@ -74,7 +74,6 @@ export const login: RequestHandler = async (req, res) => {
     res.append('Set-Cookie', cookie);
     return res.status(200).end();
   } catch (error: any) {
-    console.log('HELLO THERE', error);
     return res.status(error.status || 500).end(error.message);
   }
 };
