@@ -1,8 +1,8 @@
 # Github OAuth
 
-Previously I worked on a project that used Magic Link to provide OAuth and while it did simply the authentication process, it increased login times considerably. Because of this I thought it would be a good idea to practice implmenting OAuth manually, before testing other tools like Firebase, Supabase and SurrealDB.
+Previously I worked on a project that used Magic Link to provide OAuth and while it did simplify the authentication process, it increased login times considerably. Because of this, I thought it would be a good idea to practice implmenting OAuth manually, before testing other tools like Firebase, Supabase, and SurrealDB.
 
-When a user logs in with GitHub OAuth for the first time a row is created in the `User` table with an associated row added to the `UserToken` table. A cookie is then stored in the user's browser so that they no longer have to login to the application again, unless they explicitly log out.
+When a user logs in with GitHub OAuth for the first time, a row is created in the `User` table with an associated row added to the `UserToken` table. A cookie is then stored in the user's browser so that they no longer have to login to the application again, unless they explicitly log out.
 
 ## Technologies used
 
