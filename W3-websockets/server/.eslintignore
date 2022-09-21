@@ -1,0 +1,8 @@
+.idea
+*.iml
+out
+gen
+# Generated files
+src/nexus-typegen.ts
+src/schema.graphql
+src/graphql/types.generated.ts
