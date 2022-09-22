@@ -2,6 +2,11 @@
 
 ![Subscription messages](assets/sub.gif)
 
+Real time web updates has become a pretty standard feature on modern web apps. Intermitent polling is a common technique and is super simple to implement with Apollo's pollingInterval query attribute. Rather than using this approach, I decided to use WebSockets.
+
+
+This projcet is a bare bones chat app that uses Apollo subscriptions to implement the real time updates. Apollo uses a publish-subscribe (pub/sub) model to track events that update active subscriptions. The PubSub class implemented in this project is not suitable for production use as it's an in-memory event system that only supports a single server instance. There are many other PubSub libraries that are suitable for production environments and I will definitely be looking into those in the future.
+
 ## Technologies used
 
 | Backend | Frontend      |
