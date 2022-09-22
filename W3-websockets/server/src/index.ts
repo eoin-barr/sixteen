@@ -1,11 +1,15 @@
-import { createServer } from "./server";
+import { server, httpServer } from "./server";
 
-(async (resolve) => {
-  const httpServer = await createServer();
-  return httpServer.listen({ port: 4000 }, resolve);
-})().then(() => {
-  console.log("API server is running on http://localhost:4000/ 🚀");
+// server.listen().then(({ url }) => {
+//   console.log(`🚀 Server ready at ${url}`);
+// });
+const PORT = 4000;
+
+httpServer.listen(PORT, () => {
   console.log(
-    "Apollo GraphQL server is running on http://localhost:4000/graphql 🚀"
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
+  console.log(
+    `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`
   );
 });

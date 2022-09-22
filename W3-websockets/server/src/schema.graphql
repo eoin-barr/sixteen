@@ -2,20 +2,39 @@
 ### Do not make changes to this file directly
 
 
-type Mutation {
-  createPost(title: String!): Post!
+type AuthPayload {
+  token: String
+  user: User!
 }
 
-type Post {
+type Message {
   id: Int
-  published: Boolean
-  title: String
+  text: String
+  userId: Int
+}
+
+type Mutation {
+  createMessage(text: String!, userId: Int!): Message!
+  deleteMessage(messageId: Int!): Message
+  login(email: String!, password: String!): AuthPayload
+  signup(email: String!, name: String!, password: String!): AuthPayload!
 }
 
 type Query {
-  posts: [Post]!
+  message(messageId: Int!): Message!
+  messages: [Message]!
+  user(userId: Int!): User!
+  userMessages(userId: Int!): [Message]!
+  users: [User]!
 }
 
 type Subscription {
-  postCreated: Post!
+  createMessage: Message
+}
+
+type User {
+  email: String
+  id: Int
+  name: String
+  password: String
 }

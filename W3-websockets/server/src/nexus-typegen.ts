@@ -28,14 +28,24 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Mutation: {};
-  Post: { // root type
-    id?: number | null; // Int
-    published?: boolean | null; // Boolean
-    title?: string | null; // String
+  AuthPayload: { // root type
+    token?: string | null; // String
+    user: NexusGenRootTypes['User']; // User!
   }
+  Message: { // root type
+    id?: number | null; // Int
+    text?: string | null; // String
+    userId?: number | null; // Int
+  }
+  Mutation: {};
   Query: {};
   Subscription: {};
+  User: { // root type
+    email?: string | null; // String
+    id?: number | null; // Int
+    name?: string | null; // String
+    password?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -49,43 +59,101 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Mutation: { // field return type
-    createPost: NexusGenRootTypes['Post']; // Post!
+  AuthPayload: { // field return type
+    token: string | null; // String
+    user: NexusGenRootTypes['User']; // User!
   }
-  Post: { // field return type
+  Message: { // field return type
     id: number | null; // Int
-    published: boolean | null; // Boolean
-    title: string | null; // String
+    text: string | null; // String
+    userId: number | null; // Int
+  }
+  Mutation: { // field return type
+    createMessage: NexusGenRootTypes['Message']; // Message!
+    deleteMessage: NexusGenRootTypes['Message'] | null; // Message
+    login: NexusGenRootTypes['AuthPayload'] | null; // AuthPayload
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
-    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+    message: NexusGenRootTypes['Message']; // Message!
+    messages: Array<NexusGenRootTypes['Message'] | null>; // [Message]!
+    user: NexusGenRootTypes['User']; // User!
+    userMessages: Array<NexusGenRootTypes['Message'] | null>; // [Message]!
+    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
   }
   Subscription: { // field return type
-    postCreated: NexusGenRootTypes['Post']; // Post!
+    createMessage: NexusGenRootTypes['Message'] | null; // Message
+  }
+  User: { // field return type
+    email: string | null; // String
+    id: number | null; // Int
+    name: string | null; // String
+    password: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Mutation: { // field return type name
-    createPost: 'Post'
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
   }
-  Post: { // field return type name
+  Message: { // field return type name
     id: 'Int'
-    published: 'Boolean'
-    title: 'String'
+    text: 'String'
+    userId: 'Int'
+  }
+  Mutation: { // field return type name
+    createMessage: 'Message'
+    deleteMessage: 'Message'
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
   }
   Query: { // field return type name
-    posts: 'Post'
+    message: 'Message'
+    messages: 'Message'
+    user: 'User'
+    userMessages: 'Message'
+    users: 'User'
   }
   Subscription: { // field return type name
-    postCreated: 'Post'
+    createMessage: 'Message'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'Int'
+    name: 'String'
+    password: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createPost: { // args
-      title: string; // String!
+    createMessage: { // args
+      text: string; // String!
+      userId: number; // Int!
+    }
+    deleteMessage: { // args
+      messageId: number; // Int!
+    }
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
+    }
+  }
+  Query: {
+    message: { // args
+      messageId: number; // Int!
+    }
+    user: { // args
+      userId: number; // Int!
+    }
+    userMessages: { // args
+      userId: number; // Int!
     }
   }
 }
@@ -114,9 +182,9 @@ export type NexusGenAbstractsUsingStrategyResolveType = never;
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {
-    resolveType: false
-    __typename: false
     isTypeOf: false
+    resolveType: true
+    __typename: false
   }
 }
 
