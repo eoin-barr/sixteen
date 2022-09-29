@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  images: {
+    domains: [
+      "res.cloudinary.com",
+      "avatars.githubusercontent.com",
+      "images.unsplash.com",
+    ],
+  },
   reactStrictMode: true,
-  swcMinify: true,
-}
-
-module.exports = nextConfig
+};
