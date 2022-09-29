@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-export const GET_POSTS = gql`
-  query PostSummary($offset: Int!, $limit: Int!) {
-    postSummary(offset: $offset, limit: $limit) {
-      posts {
+export const GET_REPOS = gql`
+  query RepoSummary($offset: Int!, $limit: Int!) {
+    repoSummary(offset: $offset, limit: $limit) {
+      repos {
         id
         title
       }

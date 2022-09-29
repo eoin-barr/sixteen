@@ -1,11 +1,12 @@
+import React from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
+import { MdOutlineGridView } from 'react-icons/md';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
 
+import { ALL_PROJETS } from '../graphql';
 import ProjectCard from '../components/project';
-import { ALL_PROJETS } from '../graphql/queries';
 import { FillLoadingSpinner } from '../components/loading';
 
 const ProjectsPage: NextPage = () => {
@@ -25,10 +26,6 @@ const ProjectsPage: NextPage = () => {
 
   const { endCursor, hasNextPage } = data.projects.pageInfo;
 
-  const handleClick = () => {
-    router.push('/login');
-  };
-
   function loadMore() {
     fetchMore({
       // eslint-disable-next-line radix
@@ -43,20 +40,18 @@ const ProjectsPage: NextPage = () => {
     });
   }
 
-  const handleScroll = (e: any) => {
-    const scrollHeight = e.target.documentElement.scrollHeight;
-    const currentHeight = Math.ceil(
-      e.target.documentElement.scrollTop + window.innerHeight
-    );
-    if (currentHeight + 1 >= scrollHeight) {
-      loadMore();
-    }
-  };
-
   return (
-    <div className="flex flex-col items-center justify-start py-6 bg-black">
+    <div className="relative flex flex-col items-center justify-start py-6 bg-[#0D1117] px-2">
+      <div className="absolute top-6 right-2 w-10 h-10">
+        <MdOutlineGridView
+          onClick={() => router.push('/')}
+          className="text-gray-400 h-8 w-8 hover:text-white cursor-pointer"
+        />
+      </div>
       <div>
-        <h2 className="text-3xl text-white">Unilateral Pagination - Infinite Scroll</h2>
+        <h2 className="max-w-[720px] md:text-3xl text-lg text-center text-gray-300 pt-2">
+          Cursor Based Pagination - Infinite Scroll
+        </h2>
       </div>
       <div className="w-150">
         <InfiniteScroll
@@ -66,7 +61,7 @@ const ProjectsPage: NextPage = () => {
           loader={<FillLoadingSpinner className="mt-n-80" color="border-white" />}
           className="flex flex-col justify-start items-center overflow-y-scroll"
         >
-          {data?.projects.edges.map(({ node }: any, index: any) => (
+          {data?.projects.edges.map(({ node }: any) => (
             <ProjectCard project={node} key={node.id} />
           ))}
           {!hasNextPage && (
@@ -75,18 +70,6 @@ const ProjectsPage: NextPage = () => {
             </p>
           )}
         </InfiniteScroll>
-        {/* {hasNextPage ? (
-          <button
-            className='px-4 py-2 bg-blue-500 text-white rounded my-10'
-            onClick={() => loadMore()}
-          >
-            more
-          </button>
-        ) : (
-          <p className='my-10 text-center font-medium'>
-            You have reached the end
-          </p>
-        )} */}
       </div>
     </div>
   );

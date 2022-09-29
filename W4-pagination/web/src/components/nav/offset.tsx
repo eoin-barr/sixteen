@@ -18,7 +18,7 @@ interface OffsetNavProps {
 
 function SetButton(props: ButtonProps) {
   const { min, max, setPage, page } = props;
-  const base = `flex items-center justify-center md:w-9 w-7 md:px-2 px-1 py-1 rounded-md  border-black border`;
+  const base = `flex items-center justify-center md:w-9 w-7 md:px-2 px-1 py-1 rounded-md  border-[#0D1117] border`;
 
   return (
     <>
@@ -96,7 +96,7 @@ export default function OffsetNav(props: OffsetNavProps) {
         </>
       )}
       <button
-        disabled={data.postSummary.count <= (page + 1) * PAGE_SIZE}
+        disabled={data.repoSummary.count <= (page + 1) * PAGE_SIZE}
         onClick={() => setPage((prev: number) => prev + 1)}
         className="flex items-center justify-center text-white md:p-2 p-1 rounded-md md:w-24 w-16 disabled:text-gray-600"
       >
