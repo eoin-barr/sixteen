@@ -2,7 +2,7 @@
 
 ![Pagination](assets/pagination.gif)
 
-For this week I decided to implment two of the most common types of pagination; `offset` and `curosr-based`. `Offset-based` pagination requires only a limit (to indicate the number of items) and an offset (which item to start after). I liked Github's implmentation and so copied their design. `Cursor-based` pagination (a.k.a infinite scroll) is tricker to implement but more robust that `offset-based`. By taking the `id` of the last item taken, protects the pagination from being effected when new data is created.
+For this week I decided to implement two of the most common types of pagination; `offset` and `cursor-based`. `Offset-based` pagination requires only a limit (to indicate the number of items) and an offset (which item to start after). I liked Github's implementation and so copied their design. `Cursor-based` pagination (a.k.a infinite scroll) is trickier to implement but more robust that `offset-based` pagination. By taking the `id` of the last item taken, protects the pagination from being affected when new data is created.
 
 ## Technologies used
 
