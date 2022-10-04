@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserToken {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  hash        String   @unique
+  userID      BigInt   @map("user_id")
+  displayName String   @map("display_name")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  expiresAt   DateTime @default(dbgenerated("(now() + '10 years'::interval)")) @map("expires_at") @db.Timestamp(6)
+  users       User     @relation(fields: [userID], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user_token")
+}
+
+model User {
+  id                 BigInt      @id @default(autoincrement())
+  email              String      @unique
+  githubID           BigInt      @map("github_id")
+  githubUsername     String      @map("github_username")
+  githubAvatarUrl    String      @map("github_avatar_url")
+  dateJoined         DateTime    @default(now()) @map("date_joined") @db.Timestamp(6)
+  githubAppInstalled Boolean     @default(false) @map("github_app_installed")
+  githubOauthToken   String?     @map("github_oauth_token")
+  customerID         String?     @map("customer_id")
+  pricingPlan        BigInt      @default(dbgenerated("default_plan()")) @map("pricing_plan")
+  pricingPlans       PricingPlan @relation("pricingPlansTousers", fields: [pricingPlan], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userTokens         UserToken[]
+
+  @@map("users")
+}
+
+model PricingPlan {
+  id             BigInt @id @default(autoincrement())
+  name           String @unique
+  productID      String @map("product_id")
+  cheapestPrice  Int    @default(0) @map("cheapest_price") @db.SmallInt
+  expensivePrice Int    @default(0) @map("expensive_price") @db.SmallInt
+  users          User[] @relation("pricingPlansTousers")
+
+  @@map("pricing_plans")
+}
