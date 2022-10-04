@@ -12,7 +12,7 @@ export const UserTokenMutatioon = extendType({
         expiresAt: dateTimeArg(),
       },
       resolve: (_root, args, ctx) => {
-        if (!ctx.user.id) {
+        if (!ctx.user.uid) {
           throw new GqlUnauthorizedError('Not authenticated');
         }
 
@@ -43,7 +43,7 @@ export const UserTokenMutatioon = extendType({
         id: nonNull(uuidArg()),
       },
       resolve: (_root, args, ctx) => {
-        if (!ctx.user.id) {
+        if (!ctx.user.uid) {
           throw new GqlUnauthorizedError('Not authenticated');
         }
 

@@ -4,9 +4,28 @@
  */
 
 
-
-
-
+import type { Context } from "./context"
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    uuid<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "UUID";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "BigInt";
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    uuid<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "UUID";
+    /**
+     * The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+     */
+    bigInt<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "BigInt";
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -25,10 +44,42 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  BigInt: any
+  DateTime: Date
+  UUID: string
 }
 
 export interface NexusGenObjects {
+  AuthCode: { // root type
+    code: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['UUID']; // UUID!
+  }
+  Mutation: {};
   Query: {};
+  Stripe: { // root type
+    clientCheckoutUrl?: string | null; // String
+    clientSecretValue?: string | null; // String
+    subscribed?: boolean | null; // Boolean
+  }
+  User: { // root type
+    customerID?: string | null; // String
+    dateJoined: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    githubAvatarUrl: string; // String!
+    githubID: NexusGenScalars['BigInt']; // BigInt!
+    githubUsername: string; // String!
+    id: NexusGenScalars['BigInt']; // BigInt!
+  }
+  UserToken: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    displayName: string; // String!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    hash?: string | null; // String
+    id: NexusGenScalars['UUID']; // UUID!
+    token?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -42,18 +93,113 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthCode: { // field return type
+    code: string; // String!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    id: NexusGenScalars['UUID']; // UUID!
+  }
+  Mutation: { // field return type
+    createUserToken: NexusGenRootTypes['UserToken'] | null; // UserToken
+    deleteUserToken: NexusGenRootTypes['UserToken'] | null; // UserToken
+    upsertMe: NexusGenRootTypes['User']; // User!
+  }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    UserTokens: Array<NexusGenRootTypes['UserToken'] | null> | null; // [UserToken]
+    clientCheckout: NexusGenRootTypes['Stripe'] | null; // Stripe
+    clientSecret: NexusGenRootTypes['Stripe'] | null; // Stripe
+    me: NexusGenRootTypes['User'] | null; // User
+    subscription: NexusGenRootTypes['Stripe'] | null; // Stripe
+  }
+  Stripe: { // field return type
+    clientCheckoutUrl: string | null; // String
+    clientSecretValue: string | null; // String
+    subscribed: boolean | null; // Boolean
+  }
+  User: { // field return type
+    customerID: string | null; // String
+    dateJoined: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    githubAppAuthorized: boolean; // Boolean!
+    githubAvatarUrl: string; // String!
+    githubID: NexusGenScalars['BigInt']; // BigInt!
+    githubUsername: string; // String!
+    id: NexusGenScalars['BigInt']; // BigInt!
+  }
+  UserToken: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    displayName: string; // String!
+    expiresAt: NexusGenScalars['DateTime']; // DateTime!
+    hash: string | null; // String
+    id: NexusGenScalars['UUID']; // UUID!
+    token: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthCode: { // field return type name
+    code: 'String'
+    createdAt: 'DateTime'
+    expiresAt: 'DateTime'
+    id: 'UUID'
+  }
+  Mutation: { // field return type name
+    createUserToken: 'UserToken'
+    deleteUserToken: 'UserToken'
+    upsertMe: 'User'
+  }
   Query: { // field return type name
-    ok: 'Boolean'
+    UserTokens: 'UserToken'
+    clientCheckout: 'Stripe'
+    clientSecret: 'Stripe'
+    me: 'User'
+    subscription: 'Stripe'
+  }
+  Stripe: { // field return type name
+    clientCheckoutUrl: 'String'
+    clientSecretValue: 'String'
+    subscribed: 'Boolean'
+  }
+  User: { // field return type name
+    customerID: 'String'
+    dateJoined: 'DateTime'
+    email: 'String'
+    githubAppAuthorized: 'Boolean'
+    githubAvatarUrl: 'String'
+    githubID: 'BigInt'
+    githubUsername: 'String'
+    id: 'BigInt'
+  }
+  UserToken: { // field return type name
+    createdAt: 'DateTime'
+    displayName: 'String'
+    expiresAt: 'DateTime'
+    hash: 'String'
+    id: 'UUID'
+    token: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createUserToken: { // args
+      expiresAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    }
+    deleteUserToken: { // args
+      id: NexusGenScalars['UUID']; // UUID!
+    }
+    upsertMe: { // args
+      email: string; // String!
+      githubAvatarUrl: string; // String!
+      githubID: NexusGenScalars['BigInt']; // BigInt!
+      githubUsername: string; // String!
+    }
+  }
+  Query: {
+    clientCheckout: { // args
+      priceID: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -80,14 +226,14 @@ export type NexusGenAbstractsUsingStrategyResolveType = never;
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {
-    isTypeOf: false
-    resolveType: true
+    resolveType: false
     __typename: false
+    isTypeOf: false
   }
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

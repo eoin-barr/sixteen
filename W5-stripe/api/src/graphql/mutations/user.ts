@@ -18,7 +18,7 @@ export const UserMutation = extendType({
       },
 
       async resolve(_root, args, ctx) {
-        if (!ctx.user.id) {
+        if (!ctx.user.uid) {
           throw new GqlUnauthorizedError('Not authenticated');
         }
 
