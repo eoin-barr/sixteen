@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
+export * from './user';
+
 export const db = new PrismaClient();
 
 interface CheckDbConnectionPluginOptions {
