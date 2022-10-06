@@ -31,6 +31,8 @@ export const upsertUser = async (data: UpsertUserInput): Promise<User> => {
     },
   });
 
+  console.log('inside');
+
   if (!user) {
     return db.user
       .create({
@@ -44,14 +46,16 @@ export const upsertUser = async (data: UpsertUserInput): Promise<User> => {
       });
   }
 
+  console.log('ABOVE update suer');
+
   return db.user
     .update({
       where: { email: data.email },
       data: {
-        customerID: data.customerID,
         githubID: data.githubID,
         githubUsername: data.githubUsername,
         githubAvatarUrl: data.githubAvatarUrl,
+        customerID: data.customerID,
       },
     })
     .then((u: any) => {

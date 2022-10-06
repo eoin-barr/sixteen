@@ -27,6 +27,7 @@ export const login: RequestHandler = async (req, res) => {
   if (!state || !code) {
     return res.status(400).send({ error: 'Missing state or code' });
   }
+  console.log('here');
 
   let githubInfo: GithubUserInfo;
   try {
@@ -39,28 +40,35 @@ export const login: RequestHandler = async (req, res) => {
     return res.status(500).send({ error: `Failed to authenticate with Github` });
   }
 
+  console.log('ABOVE UPSERTUSERT');
+  console.log('githubInfo', githubInfo);
+  console.log('req.body', req.body);
+
   try {
     const data = {
       email: githubInfo.email,
       githubID: githubInfo.databaseId,
       githubUsername: githubInfo.login,
       githubAvatarUrl: githubInfo.avatarUrl,
-      customerID: req.body.customerID,
+      customerID: req.body.customerID || null,
     };
     let user: User;
     try {
       user = await upsertUser(data);
     } catch (e) {
+      console.log('INSIDE ERROR', e);
       return res.status(500).send({ error: 'Failed to create user' });
     }
 
-    try {
-      const customer = await upsertCustomer(user.id, user.email);
-      await updateUser(user.id, { customerID: customer.id });
-    } catch (e) {
-      console.log(e);
-      return res.status(500).send({ error: 'failed to create user customer record' });
-    }
+    console.log('BELOW UPSERTUSERT');
+
+    // try {
+    //   const customer = await upsertCustomer(user.id, user.email);
+    //   await updateUser(user.id, { customerID: customer.id });
+    // } catch (e) {
+    //   console.log(e);
+    //   return res.status(500).send({ error: 'failed to create user customer record' });
+    // }
 
     const expiresAt = new Date(Date.now() + MAX_AGE * 1000);
     const st = createSecureToken(expiresAt);
@@ -80,6 +88,8 @@ export const login: RequestHandler = async (req, res) => {
 
     const session = { uid: Number(user.id), token: st.token };
     const cookie = await createSessionCookie(res, session);
+
+    console.log('COOKIE');
 
     res.append('Set-Cookie', cookie);
     return res.status(200).end();

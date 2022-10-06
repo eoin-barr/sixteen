@@ -32,7 +32,7 @@ model User {
   githubAppInstalled Boolean     @default(false) @map("github_app_installed")
   githubOauthToken   String?     @map("github_oauth_token")
   customerID         String?     @map("customer_id")
-  pricingPlan        BigInt      @default(autoincrement()) @map("pricing_plan")
+  pricingPlan        BigInt      @default(0) @map("pricing_plan")
   pricingPlans       PricingPlan @relation("pricingPlansTousers", fields: [pricingPlan], references: [id], onDelete: NoAction, onUpdate: NoAction)
   userTokens         UserToken[]
 

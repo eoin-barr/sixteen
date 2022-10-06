@@ -21,7 +21,7 @@ CREATE TABLE "users" (
     "github_app_installed" BOOLEAN NOT NULL DEFAULT false,
     "github_oauth_token" TEXT,
     "customer_id" TEXT,
-    "pricing_plan" BIGSERIAL NOT NULL,
+    "pricing_plan" BIGINT NOT NULL DEFAULT 0,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
