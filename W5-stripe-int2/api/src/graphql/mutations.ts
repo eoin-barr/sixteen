@@ -39,7 +39,6 @@ export const UserMutation = extendType({
         password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
-        console.log('REQ', ctx.req.session);
         const user = await ctx.db.user.findUnique({
           where: {
             email: args.email,
@@ -54,9 +53,7 @@ export const UserMutation = extendType({
         if (!valid) {
           throw new GqlUnauthorizedError('Incorrect password');
         }
-        console.log('SES1', user.id);
-        // await ctx.req.session = { ...ctx.req.session, userId: user.id };
-        // await ctx.req.session.userId = user.id;
+
         await setSession(ctx, user);
 
         return user;

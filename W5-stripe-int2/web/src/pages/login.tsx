@@ -2,14 +2,14 @@ import { useMutation } from "@apollo/client";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { REGISTER } from "../graphql";
+import { LOGIN } from "../graphql";
 
-const Home: NextPage = () => {
+const Login: NextPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [register, { loading, error, data }] = useMutation(REGISTER, {
+  const [login, { loading, error, data }] = useMutation(LOGIN, {
     variables: {
       email,
       password,
@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!error && data) {
-      router.push("/login");
+      router.push("/me");
     }
   }, [data]);
 
@@ -26,14 +26,14 @@ const Home: NextPage = () => {
     if (!email || !password) {
       return;
     }
-    register();
+    login();
   };
 
   return (
     <div className='flex items-center justify-center bg-gray-900'>
       <div className='flex flex-col'>
         <div className='flex items-center justify-center text-2xl text-gray-300 py-2'>
-          Register
+          Login
         </div>
         <div className='py-2'>
           <input
@@ -60,10 +60,11 @@ const Home: NextPage = () => {
           >
             {loading ? "Loading" : "Submit"}
           </button>
+          {error && <div className='text-red-500'>{error.message}</div>}
         </div>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Login;
