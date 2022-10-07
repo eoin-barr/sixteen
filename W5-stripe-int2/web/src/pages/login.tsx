@@ -18,7 +18,7 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (!error && data) {
-      router.push("/me");
+      router.push("/subscribe");
     }
   }, [data]);
 

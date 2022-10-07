@@ -5,6 +5,8 @@ export const User = objectType({
   definition(t) {
     t.nonNull.int('id');
     t.nonNull.string('email');
+    t.string('stripeId');
+    t.nonNull.string('type');
     t.nonNull.string('password');
   },
 });

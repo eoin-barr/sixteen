@@ -1,6 +1,7 @@
 import { extendType, nonNull, stringArg } from 'nexus';
 import bcrypt from 'bcryptjs';
 import { GqlInternalServerError, GqlUnauthorizedError } from '../lib/errors';
+import { stripe } from '../stripe';
 
 const setSession = (ctx: any, user: any) => {
   ctx.req.session.userId = user.id;
@@ -22,6 +23,7 @@ export const UserMutation = extendType({
           data: {
             email: args.email,
             password: hashedPassword,
+            stripeId: '',
           },
         });
 
@@ -55,6 +57,56 @@ export const UserMutation = extendType({
         }
 
         await setSession(ctx, user);
+
+        return user;
+      },
+    });
+
+    t.nonNull.field('createStripeSubscription', {
+      type: 'User',
+      args: {
+        source: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx) {
+        if (!ctx.req.session.userId) {
+          throw new GqlUnauthorizedError('You must be logged in');
+        }
+        console.log('here');
+        let user = await ctx.db.user.findUnique({
+          where: {
+            id: ctx.req.session.userId,
+          },
+        });
+
+        if (!user) {
+          throw new GqlUnauthorizedError('Could not find user');
+        }
+
+        console.log('there');
+
+        const customer = await stripe.customers.create({
+          email: user.email,
+          source: args.source,
+        });
+
+        const charge = await stripe.charges.create({
+          amount: 1000,
+          currency: 'eur',
+          customer: customer.id,
+          description: 'Example charge',
+        });
+
+        console.log('everywhere');
+
+        user = await ctx.db.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            stripeId: customer.id,
+            type: 'paid',
+          },
+        });
 
         return user;
       },

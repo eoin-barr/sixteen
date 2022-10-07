@@ -29,3 +29,13 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const CREATE_STRIPE_SUBSCRIPTION = gql`
+  mutation CreateStripeSubscription($source: String!) {
+    createStripeSubscription(source: $source) {
+      id
+      email
+      stripeId
+    }
+  }
+`;

@@ -34,6 +34,8 @@ export interface NexusGenObjects {
     email: string; // String!
     id: number; // Int!
     password: string; // String!
+    stripeId?: string | null; // String
+    type: string; // String!
   }
 }
 
@@ -49,6 +51,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    createStripeSubscription: NexusGenRootTypes['User']; // User!
     login: NexusGenRootTypes['User']; // User!
     register: NexusGenRootTypes['User']; // User!
   }
@@ -59,11 +62,14 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: number; // Int!
     password: string; // String!
+    stripeId: string | null; // String
+    type: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    createStripeSubscription: 'User'
     login: 'User'
     register: 'User'
   }
@@ -74,11 +80,16 @@ export interface NexusGenFieldTypeNames {
     email: 'String'
     id: 'Int'
     password: 'String'
+    stripeId: 'String'
+    type: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createStripeSubscription: { // args
+      source: string; // String!
+    }
     login: { // args
       email: string; // String!
       password: string; // String!
