@@ -3,15 +3,16 @@
 
 
 type Mutation {
-  register(name: String!, password: String!): User!
+  login(email: String!, password: String!): User!
+  register(email: String!, password: String!): User!
 }
 
 type Query {
-  ok: Boolean!
+  me: User
 }
 
 type User {
+  email: String!
   id: Int!
-  name: String!
   password: String!
 }

@@ -1,6 +1,11 @@
 import { extendType, nonNull, stringArg } from 'nexus';
 import bcrypt from 'bcryptjs';
-import { GqlInternalServerError } from '../lib/errors';
+import { GqlInternalServerError, GqlUnauthorizedError } from '../lib/errors';
+
+const setSession = (ctx: any, user: any) => {
+  ctx.req.session.userId = user.id;
+  return user;
+};
 
 export const UserMutation = extendType({
   type: 'Mutation',
@@ -8,14 +13,14 @@ export const UserMutation = extendType({
     t.nonNull.field('register', {
       type: 'User',
       args: {
-        name: nonNull(stringArg()),
+        email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
       async resolve(_, args, ctx) {
         const hashedPassword = await bcrypt.hash(args.password, 10);
         const user = await ctx.db.user.create({
           data: {
-            name: args.name,
+            email: args.email,
             password: hashedPassword,
           },
         });
@@ -23,6 +28,37 @@ export const UserMutation = extendType({
         if (!user) {
           throw new GqlInternalServerError('Failed to create user');
         }
+        return user;
+      },
+    });
+
+    t.nonNull.field('login', {
+      type: 'User',
+      args: {
+        email: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+      },
+      async resolve(_, args, ctx) {
+        console.log('REQ', ctx.req.session);
+        const user = await ctx.db.user.findUnique({
+          where: {
+            email: args.email,
+          },
+        });
+
+        if (!user) {
+          throw new GqlUnauthorizedError('Could not find user with that email');
+        }
+
+        const valid = await bcrypt.compare(args.password, user.password);
+        if (!valid) {
+          throw new GqlUnauthorizedError('Incorrect password');
+        }
+        console.log('SES1', user.id);
+        // await ctx.req.session = { ...ctx.req.session, userId: user.id };
+        // await ctx.req.session.userId = user.id;
+        await setSession(ctx, user);
+
         return user;
       },
     });

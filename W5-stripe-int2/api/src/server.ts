@@ -2,6 +2,8 @@ import cors from 'cors';
 import http from 'http';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import session from 'express-session';
+
 import { schema } from './schema';
 import { context } from './context';
 import bodyParser from 'body-parser';
@@ -12,7 +14,7 @@ async function createServer() {
 
   const server = new ApolloServer({
     schema,
-    context,
+    context: ({ req }: any) => ({ ...context, req }),
   });
 
   const corsOptions = {
@@ -25,6 +27,14 @@ async function createServer() {
     credentials: true,
     cors: false,
   };
+
+  app.use(
+    session({
+      secret: 'keyboardascat',
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
 
   app.use(cors(corsOptions));
   app.use(bodyParser.json());
