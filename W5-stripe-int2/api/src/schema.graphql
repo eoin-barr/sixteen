@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+type Mutation {
+  register(name: String!, password: String!): User!
+}
+
 type Query {
   ok: Boolean!
 }
