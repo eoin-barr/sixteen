@@ -71,7 +71,7 @@ export const UserMutation = extendType({
         if (!ctx.req.session.userId) {
           throw new GqlUnauthorizedError('You must be logged in');
         }
-        console.log('here');
+
         let user = await ctx.db.user.findUnique({
           where: {
             id: ctx.req.session.userId,
@@ -81,8 +81,6 @@ export const UserMutation = extendType({
         if (!user) {
           throw new GqlUnauthorizedError('Could not find user');
         }
-
-        console.log('there');
 
         const customer = await stripe.customers.create({
           email: user.email,
@@ -95,8 +93,6 @@ export const UserMutation = extendType({
           customer: customer.id,
           description: 'Example charge',
         });
-
-        console.log('everywhere');
 
         user = await ctx.db.user.update({
           where: {

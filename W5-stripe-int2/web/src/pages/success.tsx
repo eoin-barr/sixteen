@@ -25,14 +25,19 @@ const Success: NextPage = () => {
         <div>{error.message}</div>
       ) : (
         data && (
-          <div className='px-8 py-6 bg-white rounded-lg'>
-            <p>
-              Email: <span className='pl-9'>{data.me.email}</span>
-            </p>
-            <p>
-              Stripe ID:{" "}
-              <span className='pl-3'>****{data.me.stripeId.slice(-4)}</span>
-            </p>
+          <div>
+            <div className='flex items-center justify-center text-2xl text-gray-900 py-2'>
+              Success
+            </div>
+            <div className='px-8 py-6 bg-white rounded-lg'>
+              <p>
+                Email: <span className='pl-9'>{data.me.email}</span>
+              </p>
+              <p>
+                Stripe ID:{" "}
+                <span className='pl-3'>****{data.me.stripeId.slice(-4)}</span>
+              </p>
+            </div>
           </div>
         )
       )}

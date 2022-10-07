@@ -7,7 +7,6 @@ export const UserQuery = extendType({
     t.field('me', {
       type: 'User',
       async resolve(_, __, ctx) {
-        console.log('SES', ctx.req.session);
         if (!ctx.req.session.userId) {
           throw new GqlUnauthorizedError('Not authenticated');
         }
