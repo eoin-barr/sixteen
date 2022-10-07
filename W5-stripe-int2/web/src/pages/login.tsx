@@ -30,9 +30,9 @@ const Login: NextPage = () => {
   };
 
   return (
-    <div className='flex items-center justify-center bg-gray-900'>
+    <div className='flex items-center justify-center mt-6'>
       <div className='flex flex-col'>
-        <div className='flex items-center justify-center text-2xl text-gray-300 py-2'>
+        <div className='flex items-center justify-center text-2xl text-gray-900 py-2'>
           Login
         </div>
         <div className='py-2'>
@@ -41,7 +41,9 @@ const Login: NextPage = () => {
             type={"email"}
             placeholder='email'
             onChange={(e) => setEmail(e.target.value)}
-            className={"rounded-lg p-2"}
+            className={
+              "rounded-lg p-2 bg-white placeholder-gray-400 text-gray-900 focus:ring-0 caret-purple2 border-0 ring-0  focus:outline-none focus:ring-0"
+            }
           />
         </div>
         <div className='py-2'>
@@ -50,13 +52,15 @@ const Login: NextPage = () => {
             value={password}
             placeholder='password'
             onChange={(e) => setPassword(e.target.value)}
-            className={"rounded-lg p-2"}
+            className={
+              "rounded-lg p-2 bg-white placeholder-gray-400 text-gray-900 focus:ring-0 caret-purple2 border-0 ring-0  focus:outline-none focus:ring-0"
+            }
           />
         </div>
         <div className='py-2'>
           <button
             onClick={handleSubmit}
-            className='rounded-lg p-2 bg-gray-400 w-[193px]'
+            className='rounded-lg p-2 bg-gray-400 w-[193px] bg-blue1 hover:bg-blue2 '
           >
             {loading ? "Loading" : "Submit"}
           </button>

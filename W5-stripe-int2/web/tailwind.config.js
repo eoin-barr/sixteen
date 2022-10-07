@@ -8,6 +8,8 @@ module.exports = {
         purple2: "#7c3fc7",
         purple3: "#9e6add",
         purple4: "#2b273b",
+        blue1: "#5a9fdc",
+        blue2: "#5faff5",
       },
       backgroundColor: (theme) => theme("colors"),
       padding: {

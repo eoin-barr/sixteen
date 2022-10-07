@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+
 html,
 body {
   padding: 0;
@@ -21,6 +23,22 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: #c8c7c9;
+    font-family: "Manrope", sans-serif;
   }
+}
+
+.StripeCheckout span,
+.StripeCheckout {
+  background: #5faff5 !important;
+  border: #5faff5 !important;
+  font-size: medium !important;
+  font-weight: normal !important;
+  color: rgb(237, 237, 237) !important;
+}
+
+.StripeCheckout span:hover,
+.StripeCheckout:hover {
+  background: #5faff5 !important;
+  border: #5faff5 !important;
 }

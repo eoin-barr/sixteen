@@ -29,21 +29,22 @@ const TakeMoney: NextPage = () => {
     createStripeSubscription();
   }, [tid]);
 
-  if (loading) {
-    return <div>loading</div>;
-  }
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-
   return (
-    <StripeCheckout
-      token={async (token) => {
-        console.log("TID", token.id);
-        setTid(token.id);
-      }}
-      stripeKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
-    />
+    <div className='h-screen w-screen flex items-center justify-center'>
+      {loading ? (
+        <p>loading...</p>
+      ) : error ? (
+        <p>{error.message}</p>
+      ) : (
+        <StripeCheckout
+          token={async (token) => {
+            console.log("TID", token.id);
+            setTid(token.id);
+          }}
+          stripeKey={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+        />
+      )}
+    </div>
   );
 };
 
