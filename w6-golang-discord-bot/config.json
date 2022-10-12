@@ -1,0 +1,5 @@
+{
+  "Token": "<your-discord-bot-token>",
+  "BotPrefix": "!",
+  "OpenWeatherAPIKey": "<your-openweather-api-key>"
+}
