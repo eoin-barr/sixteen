@@ -2,7 +2,7 @@
 
 ![golang discord bot](assets/go-bot.gif)
 
-This was a really quick project to get try to get familair with the basics of Golang. The project uses the `github.com/bwmarrin/discordgo` import to handle the Discord authentication logic. When the weather keyword is entered along with a valid city name, a request is send to the Open Weather API to get the latitude and longitude for that city. A subsequent request is then sent to get the current weather for that city using these coordinates, finally parsed and sent as a reply in Discord.
+This was a really quick project to try to get familair with the basics of Golang. The project uses the `github.com/bwmarrin/discordgo` import to handle the Discord authentication logic. When the weather keyword is entered along with a valid city name, a request is send to the Open Weather API to get the latitude and longitude for that city. A subsequent request is then sent to get the current weather for that city using these coordinates, finally parsed and sent as a reply in Discord.
 
 ## Technologies used
 
