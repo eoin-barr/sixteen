@@ -30,7 +30,7 @@ func ParseMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		city := strings.Join(words[1:], " ")
-		var url string = "https://api.openweathermap.org/geo/1.0/direct?q=" + strings.ToLower(city) + "&limit=1&appid=a25eb633cc0b438b573ed82acd68adfc"
+		var url string = "https://api.openweathermap.org/geo/1.0/direct?q=" + strings.ToLower(city) + "&limit=1&appid=" + config.OpenWeatherAPIKey
 
 		cityDetailsResp, err := http.Get(url)
 		if err != nil {
