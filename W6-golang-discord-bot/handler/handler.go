@@ -8,6 +8,7 @@ import (
 	"golang-bot/types"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -33,9 +34,19 @@ func ParseMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	city := strings.Join(words[1:], " ")
-	var url string = "https://api.openweathermap.org/geo/1.0/direct?q=" + strings.ToLower(city) + "&limit=1&appid=" + config.OpenWeatherAPIKey
 
-	cityDetailsResp, err := http.Get(url)
+	var u url.URL
+	u.Scheme = "https"
+	u.Host = "api.openweathermap.org"
+	u.Path = "/geo/1.0/direct"
+
+	q := u.Query()
+	q.Set("q", strings.ToLower(city))
+	q.Set("limit", "1")
+	q.Set("appid", config.OpenWeatherAPIKey)
+	u.RawQuery = q.Encode()
+
+	cityDetailsResp, err := http.Get(u.String())
 	if err != nil {
 		fmt.Println("Error getting response")
 		s.ChannelMessageSend(m.ChannelID, cityErrorMessage)
@@ -62,8 +73,18 @@ func ParseMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	weatherUrl := "https://api.openweathermap.org/data/2.5/weather?lat=" + strconv.FormatFloat(cityDetails[0].Lat, 'f', 2, 32) + "&lon=" + strconv.FormatFloat(cityDetails[0].Lon, 'f', 2, 32) + "&appid=" + config.OpenWeatherAPIKey
-	resp, err := http.Get(weatherUrl)
+	var u2 url.URL
+	u2.Scheme = "https"
+	u2.Host = "api.openweathermap.org"
+	u2.Path = "/data/2.5/weather"
+
+	q2 := u2.Query()
+	q2.Set("lat", strconv.FormatFloat(cityDetails[0].Lat, 'f', 2, 32))
+	q2.Set("lon", strconv.FormatFloat(cityDetails[0].Lon, 'f', 2, 32))
+	q2.Set("appid", config.OpenWeatherAPIKey)
+	u2.RawQuery = q2.Encode()
+
+	resp, err := http.Get(u2.String())
 	if err != nil {
 		fmt.Println("Error getting response")
 		s.ChannelMessageSend(m.ChannelID, cityErrorMessage)
