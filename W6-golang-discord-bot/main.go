@@ -26,8 +26,7 @@ func Start() {
 	BotId = u.ID
 	goBot.AddHandler(messageHandler)
 
-	err = goBot.Open()
-	if err != nil {
+	if err = goBot.Open(); err != nil {
 		fmt.Println("Error opening connection: ", err.Error())
 		return
 	}
