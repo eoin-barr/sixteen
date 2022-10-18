@@ -24,7 +24,7 @@ brew install telnet
 
 ```bash
 go build .
-./W7-golang-tcp-chat
+./W7-golang-tcp-chat-server
 ```
 
 4. Open a new terminal and run the following command to create a client:
