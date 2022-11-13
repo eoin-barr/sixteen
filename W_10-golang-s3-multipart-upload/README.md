@@ -1,4 +1,4 @@
-# Golang S3 Multipart Uplaod
+# Golang S3 Multipart Upload
 
 ![supabase](assets/w10.gif)
 
