@@ -2,7 +2,7 @@
 
 ![cli](assets/w12.gif)
 
-This week I built a simple weather api command line tool and published it to Homebrew. This week I used Golang to implement a CLI tool that enables users to enter their city to see the weather as well as flags to get different variations of output. It was also the first time I used goreleaser which turned out to be very straightforward to understand.
+This week I built a simple weather command line tool using golang and published it to Homebrew. The tool allows users to enter the keyword `weatherme` followed by a city name to see the weather in that city as well as flags to get different variations of output. It was also the first time I used goreleaser which turned out to be very straightforward to understand.
 
 ## Technologies used
 
