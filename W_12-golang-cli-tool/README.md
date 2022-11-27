@@ -1,4 +1,4 @@
-# Golang GraphQL Server
+# Golang CLI Tool
 
 ![cli](assets/w12.gif)
 
