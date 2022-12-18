@@ -1,0 +1,6 @@
+github.com/CoinAPI/coinapi-sdk v0.0.0-20221202135641-33a0812aafc6 h1:KT7szj8PlVWLKrZDgJF5S15oOHM2vKvkNOa9YwgY5Hs=
+github.com/CoinAPI/coinapi-sdk v0.0.0-20221202135641-33a0812aafc6/go.mod h1:/oGmWHdKO01z/wNCXJkVbZhpRwFvmTH7CpSjZM/8Uqs=
+github.com/TwiN/go-color v1.4.0 h1:fNbOwOrvup5oj934UragnW0B1WKaAkkB85q19Y7h4ng=
+github.com/TwiN/go-color v1.4.0/go.mod h1:0QTVEPlu+AoCyTrho7bXbVkrCkVpdQr7YF7PYWEtSxM=
+github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
+github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
